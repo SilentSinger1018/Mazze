@@ -1,14 +1,13 @@
 import pygame
 import config
-from player import Player
+from gamemanager import Gamemanager
 
 # pygame setup
 pygame.init()
 screen = pygame.display.set_mode((config.SCREEN_WIDTH, config.SCREEN_HEIGHT))
 clock = pygame.time.Clock()
-player = Player()
 running = True
-
+gamemanager = Gamemanager(screen)
 while running:
     # poll for events
     # pygame.QUIT event means the user clicked X to close your window
@@ -18,9 +17,7 @@ while running:
 
     # fill the screen with a color to wipe away anything from last frame
     screen.fill("black")
-    player.update()
-    screen.blit(player.image, player.rect)
-
+    gamemanager.update()
     # RENDER YOUR GAME HERE
 
     # flip() the display to put your work on screen

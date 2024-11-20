@@ -50,8 +50,8 @@ class Player(pygame.sprite.Sprite):
         else:
             self.rotate_velocity = 0
                 
-    def rotate(self):
-        self.forward_angle += self.rotate_velocity * self.delta_time
+    def rotate(self, direction = 1):
+        self.forward_angle += self.rotate_velocity * self.delta_time * direction
         self.image = pygame.transform.scale(self.image_source, (self.width, self.height))
         self.image = pygame.transform.rotate(self.image, -self.forward_angle)
         self.image.set_colorkey("black")
@@ -60,13 +60,20 @@ class Player(pygame.sprite.Sprite):
         self.rect = self.image.get_rect()
         self.rect.center = center
 
-    def move(self):
+    def move(self, direction = 1):
         if(abs(self.move_velocity) > self.smallest_rotate_move):
-            self.rotate()
-        vx = self.move_velocity * math.cos(math.pi * self.forward_angle / 180)
-        vy = self.move_velocity * math.sin(math.pi * self.forward_angle / 180)
+            self.rotate(direction)
+        vx = self.move_velocity * math.cos(math.pi * self.forward_angle / 180) * direction
+        vy = self.move_velocity * math.sin(math.pi * self.forward_angle / 180) * direction
         self.rect.x += vx * self.delta_time 
         self.rect.y += vy * self.delta_time
+
+    def crash(self):
+        self.move(-1)
+        if(self.move_velocity > 0):
+            self.move_velocity = max(-100, -self.move_velocity)
+        else:
+            self.move_velocity = min(100, -self.move_velocity)
 
     def update(self):
         self.update_delta_time()
