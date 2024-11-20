@@ -2,7 +2,7 @@ import pygame
 from player import Player
 from wall import Wall
 from star import Star
-from collided import collided_rect
+from collided import collided_rect, collided_circle
 
 class Gamemanager:
     def __init__(self, screen, level = 1):
@@ -43,11 +43,14 @@ class Gamemanager:
     def collide_detect(self):
         if pygame.sprite.spritecollide(self.player, self.walls, False, collided_rect):
             self.player.crash()
+        if pygame.sprite.spritecollide(self.player, self.stars, True, collided_circle):
+            pass
 
     def update(self):
         self.player.update()
-        self.screen.blit(self.player.image, self.player.rect)
-        self.walls.draw(self.screen)
+        self.stars.update()
         self.stars.draw(self.screen)
+        self.walls.draw(self.screen)
+        self.screen.blit(self.player.image, self.player.rect)
         self.collide_detect()
 
