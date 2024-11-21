@@ -8,6 +8,8 @@ screen = pygame.display.set_mode((config.SCREEN_WIDTH, config.SCREEN_HEIGHT))
 clock = pygame.time.Clock()
 running = True
 gamemanager = Gamemanager(screen)
+level = 1
+level_limit = 2
 while running:
     # poll for events
     # pygame.QUIT event means the user clicked X to close your window
@@ -17,7 +19,14 @@ while running:
 
     # fill the screen with a color to wipe away anything from last frame
     screen.fill("black")
-    gamemanager.update()
+    if gamemanager.update():
+        #已经顺利通关
+        level += 1
+        if level > level_limit:
+            running = False
+        else:
+            gamemanager = Gamemanager(screen, level)
+        
     # RENDER YOUR GAME HERE
 
     # flip() the display to put your work on screen
